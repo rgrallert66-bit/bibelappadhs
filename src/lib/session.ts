@@ -193,7 +193,8 @@ export function buildSession(input: PlanInput): SessionPlan {
   // Room left → strengthen the weakest verses that aren't due yet.
   if (used < budget) {
     const extra = learned
-      .filter((v) => !reviewVerses.includes(v.id) && input.memory[v.id].last !== input.today)
+      // in free practice, today's verses may be strengthened again (same-day review)
+      .filter((v) => !reviewVerses.includes(v.id) && (input.mode === 'practice' || input.memory[v.id].last !== input.today))
       .sort((a, b) => input.memory[a.id].stability - input.memory[b.id].stability)
     for (const v of extra) {
       if (used >= budget - 1) break
@@ -204,8 +205,16 @@ export function buildSession(input: PlanInput): SessionPlan {
     }
   }
 
-  // Nothing at all to review and no new verse planned (e.g. practice mode before any learning)
-  if (!streams.length && queue.length) {
+  // Everything was already practised today → strengthen the weakest verses once more.
+  if (!streams.length && learned.length) {
+    for (const v of [...learned].sort((a, b) => input.memory[a.id].stability - input.memory[b.id].stability).slice(0, 4)) {
+      streams.push(reviewCards(v, input.memory[v.id], input, ctx))
+      reviewVerses.push(v.id)
+    }
+  }
+
+  // Nothing learned yet at all (e.g. practice before the first session) → start planting.
+  if (!streams.length && !learned.length && queue.length) {
     const cards = learnCards(input.verses[queue[0]], input, ctx)
     streams.push(cards)
     newVerses.push(queue[0])

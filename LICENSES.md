@@ -11,7 +11,7 @@ Beide Übersetzungen sind urheberrechtlich geschützt. Es gibt **keine** freie L
 
 ## Was die App enthält
 
-- 43 ausgewählte Lernverse (≈ 50 Verse inkl. Versbereiche) je Übersetzung, in `src/data/verses.ts`.
+- 43 ausgewählte Lernstellen (49 Verse inkl. Versbereiche) je Übersetzung, in `src/data/verses.ts`.
 - Das liegt weit unter den üblichen Zitiergrenzen (NKJV: gratis bis 500 bzw. 1.000 Verse, < 25–50 % eines
   Buches, mit Quellenvermerk). Für die Elberfelder Bibel veröffentlicht SCM R.Brockhaus keine pauschale
   Zitiergrenze; hier ist eine Anfrage beim Verlag nötig.
